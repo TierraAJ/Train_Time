@@ -19,15 +19,15 @@ var config = {
     // Grabs user input
     var trainName = $("#train-name-input").val().trim();
     var trainDestination = $("#destination-input").val().trim();
-    var empStart = moment($("#start-input").val().trim(), "MM/DD/YYYY").format("X");
-    var empRate = $("#rate-input").val().trim();
+    var startTime = moment($("#start-input").val().trim(), "HH:mm").format("X");
+    var frequency = $("#frequency").val().trim();
   
     // Creates local "temporary" object for holding train data
     var newTrain = {
       name: trainName,
       destination: trainDestination,
-      start: empStart,
-      rate: empRate
+      start: startTime,
+      rate: frequency
     };
   
     // Uploads train data to the database
@@ -39,13 +39,13 @@ var config = {
     console.log(newTrain.start);
     console.log(newTrain.rate);
   
-    alert("Train successfully added");
+    // alert("Train successfully added");
   
     // Clears all of the text-boxes
     $("#train-name-input").val("");
     $("#destination-input").val("");
     $("#start-input").val("");
-    $("#rate-input").val("");
+    $("#frequency").val("");
   });
   
   // 3. Create Firebase event for adding train to the database and a row in the html when a user adds an entry
@@ -54,36 +54,46 @@ var config = {
   
     // Store everything into a variable.
     var trainName = childSnapshot.val().name;
-    var trainDestination = childSnapshot.val().role;
-    var empStart = childSnapshot.val().start;
-    var empRate = childSnapshot.val().rate;
+    var trainDestination = childSnapshot.val().destination;
+    var startTime = childSnapshot.val().start;
+    var frequency = childSnapshot.val().rate;
   
     // Train Info
     console.log(trainName);
     console.log(trainDestination);
-    console.log(empStart);
-    console.log(empRate);
+    console.log(startTime);
+    console.log(frequency);
   
     // Prettify the train start
-    var empStartPretty = moment.unix(empStart).format("MM/DD/YYYY");
+    var startTimeObject = moment.unix(startTime);
+
+    //Getting current time.
+    var now = moment();
+
+    // Finding minutes from the startTime to the currentTime.
+    var timeBetween = now.diff(startTimeObject, "minutes");
+    console.log(timeBetween);
   
-    // Calculate the months worked using hardcore math
-    // To calculate the months worked
-    var empMonths = moment().diff(moment(empStart, "X"), "months");
-    console.log(empMonths);
+    // Getting remainder of divinding timeBetween by frequency.
+    //"%" : This JS-divides the two and returns remainder.
+    var remainder = timeBetween % frequency;
+    console.log(remainder);
   
-    // Calculate the total billed rate
-    var empBilled = empMonths * empRate;
-    console.log(empBilled);
-  
+    //Mins to next train.
+    var nextTrainMin = frequency - remainder;
+    console.log(nextTrainMin);
+
+    //Retuns the Clock time as an object.
+    var nextTrainObject = now.add(nextTrainMin, "minutes");
+    var arrivalTime = nextTrainObject.format("HH:mm");
+
     // Create the new row
     var newRow = $("<tr>").append(
       $("<td>").text(trainName),
       $("<td>").text(trainDestination),
-      $("<td>").text(empStartPretty),
-      $("<td>").text(empMonths),
-      $("<td>").text(empRate),
-      $("<td>").text(empBilled)
+      $("<td>").text(frequency),
+      $("<td>").text(arrivalTime),
+      $("<td>").text(nextTrainMin)
     );
   
     // Append the new row to the table
