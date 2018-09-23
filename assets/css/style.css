@@ -1,7 +1,10 @@
 *{
     font-family: 'Lora', serif;
 }
-
+.header{
+    text-align: right;
+    font-size: 15px;
+}
 .jumbotron{
     background-image: url(../images/train3.jpg);
     background-repeat: no-repeat;
@@ -26,4 +29,8 @@ table{
 td {
   display: inline-block;
   width: 16.575%;
+}
+.footer{
+    text-align: center;
+    font-size: 10px;
 }
