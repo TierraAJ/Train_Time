@@ -1,0 +1,29 @@
+*{
+    font-family: 'Lora', serif;
+}
+
+.jumbotron{
+    background-image: url(../images/train3.jpg);
+    background-repeat: no-repeat;
+    margin-top: 80px;
+    background-size: 100%;
+    color: rgb(0, 0, 0);
+}
+.title{
+    background-color: rgb(255, 255, 255, 0.6);
+    text-align: center;
+    margin: 20px;
+    padding: 10px;
+    border-radius: 10px;
+}
+h2{
+    text-align: center;
+}
+table{
+    text-align: center;
+}
+#train-table th,
+td {
+  display: inline-block;
+  width: 16.575%;
+}
